@@ -11,21 +11,6 @@ nest_asyncio.apply()
 
 _ = load_dotenv(find_dotenv()) 
 
-client = OpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
-    base_url=os.getenv("BASE_URL_OPENROUTER", "https://openrouter.ai/api/v1"),
-)
-
-def chat_completion(messages, tools, model="openai/gpt-4o-mini"):
-    return client.chat.completions.create(
-        model=model,
-        max_tokens=2024,
-        messages=messages,
-        tools=tools,
-        # tool_choice="auto", 
-        temperature=0.2,
-    )
-
 class MCP_ChatBot:
 
     def __init__(self):
@@ -35,18 +20,11 @@ class MCP_ChatBot:
             api_key=os.getenv("OPENROUTER_API_KEY"),
             base_url=os.getenv("BASE_URL_OPENROUTER", "https://openrouter.ai/api/v1"),
         )
-        # self.openai = OpenAI(
-        #     api_key=os.getenv("OPENROUTER_API_KEY"),
-        #     base_url=os.getenv("BASE_URL_OPENROUTER", "https://openrouter.ai/api/v1"),
-        # )
         self.available_tools: List[dict] = []
 
     async def process_query(self, query):
         messages = [{'role':'user', 'content':query}]
         process_query = True
-        # response = chat_completion(tools = self.available_tools, messages = messages)
-        # choice = response.choices[0]
-        # msg = choice.message
         while process_query:
             response = self.openai.chat.completions.create(
                 model="openai/gpt-4o-mini",
@@ -111,9 +89,7 @@ class MCP_ChatBot:
                 if msg.content:
                     print(msg.content)
                     process_query = False
-
-    
-    
+   
     async def chat_loop(self):
         """Run an interactive chat loop"""
         print("\nMCP Chatbot Started!")
