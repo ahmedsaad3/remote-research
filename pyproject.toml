@@ -1,10 +1,14 @@
 [project]
-name = "mcp-search"
+name = "remote-research-server"
 version = "0.1.0"
-description = "Add your description here"
+description = "Remote Research Server"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "arxiv>=2.2.0",
-    "mcp>=1.17.0",
+  "mcp>=1.17.0",
+  "fastmcp>=0.1.0",
+  "fastapi>=0.115.0",
+  "starlette>=0.47.2",
+  "uvicorn>=0.30.0",
+  "arxiv>=2.2.0",
 ]

@@ -102,6 +102,10 @@ class MCP_ChatBot:
         except Exception as e:
             print(f"Error loading server configuration: {e}")
             raise
+
+    def get_available_prompts(self):
+        """Return the list of available prompts."""
+        return self.available_prompts
    
     async def process_query(self, query):
         messages = [{'role':'user', 'content':query}]
@@ -197,8 +201,11 @@ class MCP_ChatBot:
                     arg_name = arg.name if hasattr(arg, 'name') else arg.get('name', 'Unknown')
                     print(f"   - {arg_name}")
 
-    async def execute_prompt(self, prompt_name: str, args: dict):
+    async def execute_prompt(self, prompt_data: dict):
         """Execute a prompt with the given arguments."""
+        prompt_name = prompt_data.get("name")
+        args = prompt_data.get("arguments", {})
+
         session = self.sessions.get(prompt_name)
         if not session:
             print(f"Prompt '{prompt_name}' not found.")

@@ -6,15 +6,16 @@ from mcp.server.fastmcp import FastMCP
 
 PAPER_DIR = "papers"
 
-mcp = FastMCP("research")
+mcp = FastMCP("research", port=8001)
 
 @mcp.tool()
-def list_registered_prompts() -> str:
-    try:
-        names = [p.name for p in mcp._prompt_manager.list_prompts()]
-        return "Prompts: " + ", ".join(names)
-    except Exception as e:
-        return f"Could not introspect prompts: {e}"
+def prompt_generate_search_prompt(topic: str, num_papers: int = 5) -> str:
+    return generate_search_prompt(topic, num_papers)
+
+
+@mcp.resource("prompt://generate_search_prompt/{topic}/{num_papers}")
+def prompt_as_resource(topic: str, num_papers: int = 5) -> str:
+    return generate_search_prompt(topic, num_papers)
 
 
 @mcp.tool()
@@ -189,6 +190,13 @@ def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
     Please present both detailed information about each paper and a high-level synthesis of the research landscape in {topic}."""
 
 
+# if __name__ == "__main__":
+#     # Initialize and run the server
+#     mcp.run(transport='stdio')
+
+
 if __name__ == "__main__":
-    # Initialize and run the server
-    mcp.run(transport='stdio')
+    import os
+    mcp.port = int(os.getenv("PORT", "8001"))
+    mcp.run(transport="sse")
+
