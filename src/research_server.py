@@ -210,10 +210,11 @@ def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
 #     )
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", "8001"))
-
-    uvicorn.run(
-        mcp.app,        
+    mcp.run(
+        transport="streamable_http",
         host="0.0.0.0", 
-        port=port
+        port=int(os.getenv("PORT","8001"))
     )
+
+
+
