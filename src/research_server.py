@@ -7,7 +7,7 @@ import uvicorn
 
 PAPER_DIR = "papers"
 
-mcp = FastMCP("research", port=8001)
+mcp = FastMCP("research", host="0.0.0.0", port=int(os.getenv("PORT", "8001")))
 
 @mcp.tool()
 def prompt_generate_search_prompt(topic: str, num_papers: int = 5) -> str:
@@ -191,6 +191,10 @@ def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
     Please present both detailed information about each paper and a high-level synthesis of the research landscape in {topic}."""
 
 
+if __name__ == "__main__":
+    # Initialize and run the server
+    mcp.run(transport='sse')
+
 # if __name__ == "__main__":
 #     # Initialize and run the server
 #     mcp.run(transport='stdio')
@@ -209,12 +213,12 @@ def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
 #         port=int(os.getenv("PORT", "8001"))
 #     )
 
-if __name__ == "__main__":
-    mcp.run(
-        transport="streamable_http",
-        host="0.0.0.0", 
-        port=int(os.getenv("PORT","8001"))
-    )
+# if __name__ == "__main__":
+#     mcp.run(
+#         transport="streamable_http",
+#         host="0.0.0.0", 
+#         port=int(os.getenv("PORT","8001"))
+#     )
 
 
 
