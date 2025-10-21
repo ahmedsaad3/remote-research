@@ -200,11 +200,23 @@ def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
 #     mcp.port = int(os.getenv("PORT", "8001"))
 #     mcp.run(transport="sse")
 
+# if __name__ == "__main__":
+#     import os
+#     mcp.run(
+#         transport="sse",                 
+#         host="0.0.0.0",                
+#         port=int(os.getenv("PORT", "8001"))
+#     )
+
+
 if __name__ == "__main__":
     import os
-    mcp.run(
-        transport="sse",                 
-        host="0.0.0.0",                
-        port=int(os.getenv("PORT", "8001"))
-    )
 
+    # ضبط المنفذ من البيئة
+    mcp.port = int(os.getenv("PORT", "8001"))
+
+    # ✅ إضافة هذا السطر لتغيير المضيف (host)
+    os.environ["HOST"] = "0.0.0.0"
+
+    # تشغيل السيرفر
+    mcp.run(transport="sse")
