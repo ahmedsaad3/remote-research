@@ -195,8 +195,16 @@ def generate_search_prompt(topic: str, num_papers: int = 5) -> str:
 #     mcp.run(transport='stdio')
 
 
+# if __name__ == "__main__":
+#     import os
+#     mcp.port = int(os.getenv("PORT", "8001"))
+#     mcp.run(transport="sse")
+
 if __name__ == "__main__":
     import os
-    mcp.port = int(os.getenv("PORT", "8001"))
-    mcp.run(transport="sse")
+    mcp.run(
+        transport="sse",                 
+        host="0.0.0.0",                
+        port=int(os.getenv("PORT", "8001"))
+    )
 
